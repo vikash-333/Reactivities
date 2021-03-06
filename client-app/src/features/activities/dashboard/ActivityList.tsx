@@ -6,8 +6,9 @@ import ActivityDetail from '../details/ActivityDetail';
 interface Props{
     activities:Activity[];
     selectActivity:(id:string)=>void;
+    handleDeleteActivity:(id: string)=>void
 }
-export default function ActivityList({activities, selectActivity}:Props){
+export default function ActivityList({activities, selectActivity, handleDeleteActivity}:Props){
     return(
         <Segment>
             <Item.Group divided>
@@ -24,6 +25,7 @@ export default function ActivityList({activities, selectActivity}:Props){
                             </Item.Description>
                             <Item.Extra>
                                 <Button floated='right' content='View' color='blue' onClick={()=>selectActivity(activity.id)}/>
+                                <Button floated='right' content='Delete' color='red' onClick={()=>handleDeleteActivity(activity.id)}/>
                                 <Label basic content={activity.category}/>
                             </Item.Extra>
                         </ItemContent>    
