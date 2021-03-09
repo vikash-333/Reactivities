@@ -15,10 +15,12 @@ interface Props {
     editMode:boolean;
     handleEditForm:(activity:Activity)=>void
     handleDeleteActivity:(id: string)=>void
+    submitting: boolean;
 }
 
 export default function ActivityDashboard({activities,selectedActivity,selectActivity,cancelSelectActivity,
-                                            handleFormOpen,handleFromClose,editMode,handleEditForm,handleDeleteActivity}:Props){
+                                            handleFormOpen,handleFromClose,editMode,handleEditForm,
+                                            handleDeleteActivity,submitting}:Props){
     return(
         <Grid>
             <Grid.Column width='10'>       
@@ -38,6 +40,7 @@ export default function ActivityDashboard({activities,selectedActivity,selectAct
                     handleFormClose={handleFromClose}
                     activity={selectedActivity}
                     handleFormEdit = {handleEditForm}
+                    submitting = {submitting}
                     />}
                 
             </Grid.Column>
