@@ -10,35 +10,39 @@ import LoadingComponent from "./LoadingComponent";
 
 function App() {
   const [activities, setactivities] = useState<Activity[]>([]);
-  const [selectedActivity, setSelectedActivity] = useState<
-    Activity | undefined
-  >(undefined);
+  const [selectedActivity, setSelectedActivity] = useState<Activity | null>(
+    null
+  );
   const [editMode, setEditMode] = useState(false);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     agent.Activities.list().then((response) => {
-      let activities: Activity[] = [];
-      response.forEach((activity) => {
-        activity.date = activity.date.split("T")[0];
-        activities.push(activity);
+      const activities = response.map((activity) => {
+        return { ...activity, date: activity.date.split("T")[0] };
       });
-      setactivities(response);
+
+      setactivities(activities);
       setLoading(false);
     });
   }, []);
 
   function handleSelectActivity(id: string) {
-    setSelectedActivity(activities.find((x) => x.id === id));
+    const selectedActivity = activities.find((x) => x.id === id) ?? null;
+    setSelectedActivity(selectedActivity);
   }
 
   function handleCancelSelectActivity() {
-    setSelectedActivity(undefined);
+    setSelectedActivity(null);
   }
 
   function handleFormOpen(id?: string) {
-    id ? handleSelectActivity(id) : handleCancelSelectActivity();
+    if (id) {
+      handleSelectActivity(id);
+    } else {
+      handleCancelSelectActivity();
+    }
     setEditMode(true);
   }
 
@@ -71,14 +75,14 @@ function App() {
 
   function handleDeleteActivity(id: string) {
     agent.Activities.delete(id).then(() => {
-      setactivities([...activities.filter((x) => x.id !== id)]);
+      setactivities(activities.filter((x) => x.id !== id));
     });
   }
 
   if (loading) return <LoadingComponent content="Loading App" />;
 
   return (
-    <div>
+    <>
       <NavBar handleFormOpen={handleFormOpen} />
       <Container style={{ marginTop: "7em" }}>
         <ActivityDashboard
@@ -94,7 +98,7 @@ function App() {
           submitting={submitting}
         />
       </Container>
-    </div>
+    </>
   );
 }
 
