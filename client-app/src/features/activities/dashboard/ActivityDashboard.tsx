@@ -7,7 +7,7 @@ import ActivityList from "./ActivityList";
 
 interface Props {
   activities: Activity[];
-  selectedActivity: Activity | undefined;
+  selectedActivity: Activity | null;
   selectActivity: (id: string) => void;
   cancelSelectActivity: () => void;
   handleFormOpen: (id: string) => void;

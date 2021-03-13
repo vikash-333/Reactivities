@@ -5,7 +5,7 @@ import { Activity } from "../../../models/Activity";
 
 interface Props {
   handleFormClose: () => void;
-  activity: Activity | undefined;
+  activity: Activity | null;
   handleFormEdit: (activity: Activity) => void;
   submitting: boolean;
 }
