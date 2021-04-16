@@ -1,7 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import { Activity } from "../../models/Activity";
 import agent from "../api/agent";
-import { v4 as uuid } from "uuid";
 
 export default class ActivityStore {
   activityRegistry = new Map<string, Activity>();
@@ -22,6 +21,7 @@ export default class ActivityStore {
   }
 
   loadActivities = async () => {
+    this.loadingInitial = true;
     try {
       const activities = await agent.Activities.list();
       runInAction(() => {
@@ -39,30 +39,45 @@ export default class ActivityStore {
     }
   };
 
-  selectActivity = (id: string) => {
-    this.selectedActivity = this.activityRegistry.get(id) ?? null;
+  loadActivity = async (id: string) => {
+    let activity = this.getActivity(id);
+    if (activity) {
+      this.selectedActivity = activity;
+      return activity;
+    } else {
+      console.log(this.activityRegistry);
+      this.loadingInitial = true;
+      try {
+        activity = await agent.Activities.details(id);
+
+        this.setActivity(activity);
+        runInAction(() => {
+          this.selectedActivity = activity ?? null;
+          this.loadingInitial = false;
+        });
+        return activity;
+      } catch (error) {
+        console.log(error);
+        runInAction(() => {
+          this.loadingInitial = false;
+        });
+      }
+    }
   };
 
-  cancelSelectedActivity = () => {
-    this.selectedActivity = null;
+  private setActivity = (activity: Activity) => {
+    activity.date = activity.date.split("T")[0];
+    this.activityRegistry.set(activity.id, activity);
   };
 
-  openForm = (id?: string) => {
-    if (id) this.selectActivity(id);
-    else this.cancelSelectedActivity();
-
-    this.editMode = true;
-  };
-
-  closeForm = () => {
-    this.editMode = false;
+  private getActivity = (id: string) => {
+    return this.activityRegistry.get(id);
   };
 
   createActivity = async (activity: Activity) => {
     this.loading = true;
 
     try {
-      activity.id = uuid();
       await agent.Activities.create(activity);
 
       runInAction(() => {
@@ -106,9 +121,6 @@ export default class ActivityStore {
 
       runInAction(() => {
         this.activityRegistry.delete(id);
-        if (this.selectedActivity?.id === id) {
-          this.cancelSelectedActivity();
-        }
         this.loading = false;
       });
     } catch (error) {
