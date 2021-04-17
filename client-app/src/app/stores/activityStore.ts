@@ -20,6 +20,18 @@ export default class ActivityStore {
     );
   }
 
+  get groupedActivities() {
+    return Object.entries(
+      this.activitiesByDate.reduce((activities, activity) => {
+        const date = activity.date;
+        activities[date] = activities[date]
+          ? [...activities[date], activity]
+          : [activity];
+        return activities;
+      }, {} as { [key: string]: Activity[] })
+    );
+  }
+
   loadActivities = async () => {
     this.loadingInitial = true;
     try {
@@ -45,7 +57,6 @@ export default class ActivityStore {
       this.selectedActivity = activity;
       return activity;
     } else {
-      console.log(this.activityRegistry);
       this.loadingInitial = true;
       try {
         activity = await agent.Activities.details(id);
