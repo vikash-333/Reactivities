@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { Button, Container, Menu } from "semantic-ui-react";
+import { Button, Container, Menu, MenuItem } from "semantic-ui-react";
 import { useStore } from "../stores/store";
 
 export default function NavBar() {
@@ -13,6 +13,7 @@ export default function NavBar() {
           Reactivities
         </Menu.Item>
         <Menu.Item as={NavLink} to="/activities" name="Activities" />
+        <Menu.Item as={NavLink} to="/errors" name="Errors" />
         <Menu.Item>
           <Button
             as={NavLink}
