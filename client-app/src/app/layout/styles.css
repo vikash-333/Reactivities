@@ -17,6 +17,12 @@ body {
   border: none;
 }
 
+.react-datepicker-wrapper {
+  width: 100%;
+}
+
+/* homepage styles */
+
 .masthead {
   display: flex;
   align-items: center;
