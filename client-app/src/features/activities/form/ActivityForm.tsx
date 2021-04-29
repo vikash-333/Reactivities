@@ -5,7 +5,7 @@ import { useHistory, useParams } from "react-router";
 import { Button, Header, Segment } from "semantic-ui-react";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { useStore } from "../../../app/stores/store";
-import { Activity } from "../../../models/Activity";
+import { Activity } from "../../../app/models/Activity";
 import { v4 as uuid } from "uuid";
 import { Link } from "react-router-dom";
 import { Formik, Form, Field } from "formik";
@@ -91,13 +91,13 @@ export default observer(function ActivityForm() {
               timeCaption="Time"
               dateFormat="MMMM d, yyyy h:mm aa"
             />
-            <Header content="Location Details" sub color="teal" />
-            <MyTextInput placeholder="Venue" name="venue" />
             <MySelectInput
               options={categoryOptions}
               placeholder="Category"
               name="category"
             />
+            <Header content="Location Details" sub color="teal" />
+            <MyTextInput placeholder="Venue" name="venue" />
             <MyTextInput placeholder="City" name="city" />
 
             <Button

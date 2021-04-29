@@ -10,7 +10,7 @@ import {
   Label,
   Segment,
 } from "semantic-ui-react";
-import { Activity } from "../../../models/Activity";
+import { Activity } from "../../../app/models/Activity";
 
 interface Props {
   activity: Activity;
