@@ -6,11 +6,13 @@ import {
   Button,
   Icon,
   Item,
-  ItemContent,
+  ItemDescription,
   Label,
+  LabelDetail,
   Segment,
 } from "semantic-ui-react";
 import { Activity } from "../../../app/models/Activity";
+import ActivityListItemAttendees from "./ActivityListItemAttendees";
 
 interface Props {
   activity: Activity;
@@ -20,14 +22,45 @@ export default observer(function ActivityListItem({ activity }: Props) {
   return (
     <Segment.Group>
       <Segment>
+        {activity.isCancelled && (
+          <Label
+            color="red"
+            attached="top"
+            style={{ textAlign: "center" }}
+            content="Cancelled"
+          />
+        )}
         <Item.Group>
           <Item>
-            <Item.Image size="tiny" src="/assets/user.png" />
+            <Item.Image
+              circular
+              style={{ marginBottom: 3 }}
+              size="tiny"
+              src="/assets/user.png"
+            />
             <Item.Content>
               <Item.Header as={Link} to={`/activities/${activity.id}`}>
                 {activity.title}
               </Item.Header>
-              <Item.Description>Hosted By VK</Item.Description>
+              <Item.Description>
+                Hosted By {activity.host?.displayName}
+              </Item.Description>
+              {activity.isHost && (
+                <ItemDescription>
+                  <Label basic color="orange">
+                    {" "}
+                    You are hosting this Activity{" "}
+                  </Label>
+                </ItemDescription>
+              )}
+              {activity.isGoing && !activity.isHost && (
+                <ItemDescription>
+                  <Label basic color="green">
+                    {" "}
+                    You are going to this Activity{" "}
+                  </Label>
+                </ItemDescription>
+              )}
             </Item.Content>
           </Item>
         </Item.Group>
@@ -40,7 +73,9 @@ export default observer(function ActivityListItem({ activity }: Props) {
           {activity.venue}
         </span>
       </Segment>
-      <Segment secondary>Attendees go here</Segment>
+      <Segment secondary>
+        <ActivityListItemAttendees attendees={activity.attendees!} />
+      </Segment>
       <Segment clearing>
         <span>{activity.description}</span>
         <Button
