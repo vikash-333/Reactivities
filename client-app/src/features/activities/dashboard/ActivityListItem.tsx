@@ -8,7 +8,6 @@ import {
   Item,
   ItemDescription,
   Label,
-  LabelDetail,
   Segment,
 } from "semantic-ui-react";
 import { Activity } from "../../../app/models/Activity";

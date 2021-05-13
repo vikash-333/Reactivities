@@ -2,6 +2,7 @@ import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import { Tab } from "semantic-ui-react";
 import { Profile } from "../../app/models/Profiles";
+import ProfileAbout from "./ProfileAbout";
 import ProfilePhotos from "./ProfilePhotos";
 /* import ProfileStore from "../../app/stores/profileStore";
 import { useStore } from "../../app/stores/store"; */
@@ -11,18 +12,8 @@ interface Props {
 }
 
 export default observer(function ProfileContent({ profile }: Props) {
-  /*   const {
-    profileStore,
-    userStore: { user },
-  } = useStore();
-  const { loadProfile, profile } = profileStore;
-
-  useEffect(() => {
-    if (user) loadProfile(user.userName);
-  }, [profileStore]); */
-
   const panes = [
-    { menuItem: "About", render: () => <Tab.Pane content="About content" /> },
+    { menuItem: "About", render: () => <ProfileAbout /> },
     { menuItem: "Photos", render: () => <ProfilePhotos profile={profile} /> },
     {
       menuItem: "Events",

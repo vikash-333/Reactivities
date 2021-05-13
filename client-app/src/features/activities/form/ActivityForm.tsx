@@ -1,14 +1,13 @@
 import { observer } from "mobx-react-lite";
-import React, { useEffect, useState } from "react";
-import { ChangeEvent } from "react";
+import { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router";
 import { Button, Header, Segment } from "semantic-ui-react";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { useStore } from "../../../app/stores/store";
-import { Activity, ActivityFormValues } from "../../../app/models/Activity";
+import { ActivityFormValues } from "../../../app/models/Activity";
 import { v4 as uuid } from "uuid";
 import { Link } from "react-router-dom";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form } from "formik";
 import MyTextInput from "../../../app/common/form/MyTextInput";
 import * as Yup from "yup";
 import MyTextArea from "../../../app/common/form/MyTextArea";
