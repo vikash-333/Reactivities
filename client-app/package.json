@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@microsoft/signalr": "^5.0.6",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.7.1",
@@ -42,7 +43,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "prettier": "prettier --write **/*.{js,css,md,tsx,ts}"
+    "prettier": "prettier --write **/*.{js,css,md,tsx,ts,cs}"
   },
   "eslintConfig": {
     "extends": [
@@ -72,6 +73,6 @@
     }
   },
   "lint-staged": {
-    "*.{js,css,md,tsx,ts}": "prettier --write"
+    "*.{js,css,md,tsx,ts,cs}": "prettier --write"
   }
 }
