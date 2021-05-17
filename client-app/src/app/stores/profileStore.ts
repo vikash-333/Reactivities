@@ -3,6 +3,7 @@ import { makeAutoObservable, reaction, runInAction } from "mobx";
 import agent from "../api/agent";
 import { Photo, Profile } from "../models/Profiles";
 import { store } from "./store";
+import UserStore from "./userStore";
 
 export default class ProfileStore {
   profile: Profile | null = null;
@@ -148,6 +149,15 @@ export default class ProfileStore {
             : this.profile.followersCount--;
           this.profile.following = following;
         }
+        if (
+          this.profile &&
+          this.profile.username === store.userStore.user?.userName
+        ) {
+          following
+            ? this.profile.followingCount++
+            : this.profile.followingCount--;
+        }
+
         this.followings.forEach((profile) => {
           if (profile.username === username) {
             profile.following
