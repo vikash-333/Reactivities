@@ -1,3 +1,4 @@
+import { string } from "yup/lib/locale";
 import { User } from "./user";
 
 export interface Profile {
@@ -23,4 +24,11 @@ export interface Photo {
   id: string;
   url: string;
   isMain: boolean;
+}
+
+export interface UserActivity {
+  id: string;
+  title: string;
+  category: string;
+  date: Date;
 }
