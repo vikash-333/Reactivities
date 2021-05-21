@@ -19,7 +19,7 @@ namespace API.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly TokenService _tokenService;
-        
+
         public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, TokenService tokenService)
         {
             _tokenService = tokenService;
@@ -32,7 +32,7 @@ namespace API.Controllers
         {
 
             var user = await _userManager.Users.Include(p => p.Photos)
-                .FirstOrDefaultAsync(x=> x.Email == loginDto.Email);
+                .FirstOrDefaultAsync(x => x.Email == loginDto.Email);
             if (user == null) return Unauthorized();
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
@@ -48,15 +48,15 @@ namespace API.Controllers
         [HttpPost("register")]
         public async Task<ActionResult<UserDto>> RegisterUser(RegisterDto registerDto)
         {
-            if(await _userManager.Users.AnyAsync(user => user.Email == registerDto.Email))
+            if (await _userManager.Users.AnyAsync(user => user.Email == registerDto.Email))
             {
-                ModelState.AddModelError("email","Email taken");
+                ModelState.AddModelError("email", "Email taken");
                 return ValidationProblem();
             }
 
-            if(await _userManager.Users.AnyAsync(user => user.UserName == registerDto.UserName))
+            if (await _userManager.Users.AnyAsync(user => user.UserName == registerDto.UserName))
             {
-                ModelState.AddModelError("username","Username taken");
+                ModelState.AddModelError("username", "Username taken");
                 return ValidationProblem();
             }
 
@@ -69,7 +69,7 @@ namespace API.Controllers
 
             var result = await _userManager.CreateAsync(user, registerDto.Password);
 
-            if(result.Succeeded)
+            if (result.Succeeded)
             {
                 return CreateUserObject(user);
             }
@@ -88,13 +88,17 @@ namespace API.Controllers
 
         private UserDto CreateUserObject(AppUser user)
         {
+            /* string img = null;
+            if(user.Photos.Count == 0)
+                img = user?.Photos?.FirstOrDefault(x => x.IsMain).Url;  */
+
             return new UserDto
-                {
-                    DisplayName = user.DisplayName,
-                    UserName = user.UserName,
-                    Image = user?.Photos?.FirstOrDefault(x => x.IsMain).Url,
-                    Token = _tokenService.CreateToken(user)
-                };
+            {
+                DisplayName = user.DisplayName,
+                UserName = user.UserName,
+                Image = user?.Photos?.FirstOrDefault(x => x.IsMain)?.Url,
+                Token = _tokenService.CreateToken(user)
+            };
         }
     }
 }
